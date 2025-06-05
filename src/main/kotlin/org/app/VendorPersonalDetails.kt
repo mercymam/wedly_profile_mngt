@@ -1,11 +1,17 @@
 package org.app
 
+import io.quarkus.hibernate.orm.panache.kotlin.PanacheCompanion
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntity
-import jakarta.persistence.Entity
+import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
+import jakarta.persistence.*
+import org.hibernate.annotations.GenericGenerator
 import java.util.UUID
 
 @Entity
-class VendorPersonalDetails: PanacheEntity() {
+class VendorPersonalDetails: PanacheEntityBase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var vendorId: Long? = null
     lateinit var firstName: String
     lateinit var lastName: String
     lateinit var email: String
@@ -16,5 +22,4 @@ class VendorPersonalDetails: PanacheEntity() {
     lateinit var profilePicture: String
     lateinit var coverPhoto: String
     lateinit var profession: String
-    lateinit var vendorId: UUID
 }
