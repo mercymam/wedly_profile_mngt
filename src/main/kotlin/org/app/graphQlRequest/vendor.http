@@ -1,0 +1,22 @@
+### POST request to example server
+POST http://localhost:8081/graphql
+Content-Type: application/json
+
+{
+  "query": "query getVendorId($vendorId: Int!) { getByVendorId(vendorId: $vendorId) { vendorId firstName lastName email } }",
+  "variables": {
+    "vendorId": 45
+  }
+}
+###
+
+POST http://localhost:8081/graphql
+Content-Type: application/json
+
+{
+  "query": "query getVendorDetails($firstName: String!, $lastName: String!) { getVendorDetails(firstName: $firstName, lastName: $lastName) { vendorId firstName lastName email profilePicture profession} }",
+  "variables": {
+    "firstName": "Mercy",
+    "lastName": "Mamedu"
+  }
+}
