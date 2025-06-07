@@ -2,6 +2,7 @@ package org.app.Entity
 
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
+import java.util.UUID
 
 @Entity
 @Table(name = "vendor_details")
@@ -15,13 +16,11 @@ class VendorPersonalDetails: PanacheEntityBase {
     @Column(name = "location")
     var city: String? = null
 
-    @Lob
     @Column(name = "profile_picture", columnDefinition = "BYTEA")
-    var profilePicture: ByteArray? = null
+    var profilePicture: String? = null
 
-    @Lob
     @Column(name = "cover_photo", columnDefinition = "BYTEA")
-    var coverPhoto: ByteArray? = null
+    var coverPhoto: String? = null
 
     @Column(name = "profession")
     var profession: String? = null
@@ -35,8 +34,11 @@ class VendorPersonalDetails: PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vendor_id")
-    var vendorId: Long? = null
+    var vendorId: UUID? = null
 
     @Column(name = "last_name")
     var lastName: String? = null
+
+    @Column(name = "password")
+    var password: String? = null
 }

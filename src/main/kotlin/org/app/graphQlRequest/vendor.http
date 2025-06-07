@@ -20,3 +20,25 @@ Content-Type: application/json
     "lastName": "Mamedu"
   }
 }
+
+###
+POST http://localhost:8081/graphql
+Content-Type: application/json
+
+{
+"query": "mutation createVendorProfile($vendorPersonalDetails: VendorPersonalDetailsDto!) { createVendorProfile(vendorPersonalDetails: $vendorPersonalDetails) { status message} }",
+"variables": {
+  "vendorPersonalDetails": {
+    "firstName": "rand",
+    "lastName": "Dunc",
+    "bio": "I am Mercy's boyfriend and I love her",
+    "city": "location",
+    "profession": "player",
+    "phone": "8790",
+    "email": "meghjk",
+    "password": "dfgh",
+    "coverPhoto": "cover",
+    "profilePicture": "profile"
+  }
+}
+}
