@@ -1,0 +1,56 @@
+### POST request to example server
+POST http://localhost:8081/graphql
+Content-Type: application/json
+
+{
+  "query": "query getVendorId($vendorId: Int!) { getByVendorId(vendorId: $vendorId) { vendorId firstName lastName email } }",
+  "variables": {
+    "vendorId": 45
+  }
+}
+###
+
+POST http://localhost:8081/graphql
+Content-Type: application/json
+
+{
+  "query": "query getVendorDetails($firstName: String!, $lastName: String!) { getVendorDetails(firstName: $firstName, lastName: $lastName) { vendorId firstName lastName email profilePicture profession} }",
+  "variables": {
+    "firstName": "Mercy",
+    "lastName": "Mamedu"
+  }
+}
+
+###
+POST http://localhost:8081/graphql
+Content-Type: application/json
+
+{
+"query": "mutation createVendorProfile($vendorPersonalDetails: VendorPersonalDetailsDto!) { createVendorProfile(vendorPersonalDetails: $vendorPersonalDetails) { status message} }",
+"variables": {
+  "vendorPersonalDetails": {
+    "firstName": "rand",
+    "lastName": "Dunc",
+    "bio": "I am Mercy's boyfriend and I love her",
+    "city": "location",
+    "profession": "player",
+    "phone": "8790",
+    "email": "meghjk",
+    "password": "dfgh",
+    "coverPhoto": "cover",
+    "profilePicture": "profile"
+  }
+}
+}
+
+###
+POST http://localhost:8081/graphql
+Content-Type: application/json
+
+{
+  "query": "mutation updateTwice($username: String!, $exception: Boolean!) { updateTwice(username: $username, exception: $exception) { status message} }",
+  "variables": {
+    "username": "yhe",
+    "exception": true
+  }
+}
