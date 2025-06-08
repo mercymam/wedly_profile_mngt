@@ -1,11 +1,13 @@
 package org.app.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.json.bind.annotation.JsonbCreator
 import org.app.Entity.VendorPersonalDetails
 import org.eclipse.microprofile.graphql.Input
 import java.util.*
 
 @Input("VendorPersonalDetailsDto")
-data class VendorPersonalDetailsDto (
+data class VendorPersonalDetailsDto @JsonbCreator constructor(
     var firstName: String? = null,
     var bio: String? = null,
     var city: String? = null,
@@ -17,6 +19,8 @@ data class VendorPersonalDetailsDto (
     var vendorId: UUID? = null,
     var lastName: String? = null,
     var password: String? = null,
+    @JsonProperty("username")
+    var username: String
 ){
 
     fun convertToEntity() = VendorPersonalDetails().apply {
@@ -31,5 +35,6 @@ data class VendorPersonalDetailsDto (
         vendorId = this@VendorPersonalDetailsDto.vendorId
         lastName = this@VendorPersonalDetailsDto.lastName
         password = this@VendorPersonalDetailsDto.password
+        username = this@VendorPersonalDetailsDto.username
     }
 }

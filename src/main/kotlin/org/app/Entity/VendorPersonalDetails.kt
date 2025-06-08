@@ -41,4 +41,7 @@ class VendorPersonalDetails: PanacheEntityBase {
 
     @Column(name = "password")
     var password: String? = null
+
+    @Column(name = "username")
+    lateinit var username: String
 }
