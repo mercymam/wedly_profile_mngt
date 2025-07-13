@@ -34,7 +34,7 @@ class VendorPersonalDetails: PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vendor_id")
-    var vendorId: UUID? = null
+    lateinit var vendorId: UUID
 
     @Column(name = "last_name")
     var lastName: String? = null

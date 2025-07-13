@@ -1,9 +1,7 @@
 package org.app.Controller
 
 import jakarta.ws.rs.core.Response.Status
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.app.dto.GraphQLResponse
@@ -73,18 +71,4 @@ class VendorGraphQLController(
             return GraphQLResponse(status = Status.INTERNAL_SERVER_ERROR.statusCode, message = "An error occurred while updating profile for vendorId: $vendorId. Exception: $ex")
         }
     }
-
-//    @Mutation("updateTwice")
-//    fun updateTwice(@Name("username") username: String, @Name("exception") exception: Boolean): GraphQLResponse {
-//        try {
-//            runBlocking {
-//                logger.info("Attempt to update twice for username $username")
-//                vendorRepo.twoUpdates(username, exception)
-//            }
-//            return GraphQLResponse(message = "Successfully updated vendor details for vendorId", status = Status.OK.statusCode)
-//        } catch (ex: Exception){
-//            logger.error("Error occurred while updating twice", ex)
-//            return GraphQLResponse(message = "An error occurred while updating twice. Exception: $ex", status = Status.INTERNAL_SERVER_ERROR.statusCode)
-//        }
-//    }
 }

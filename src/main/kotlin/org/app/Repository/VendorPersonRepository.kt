@@ -30,25 +30,10 @@ class VendorPersonRepository : PanacheRepository<VendorPersonalDetails>{
 
     @Transactional
     suspend fun updateVendorProfile(vendorPersonalDetails: VendorPersonalDetails){
-        if(vendorPersonalDetails.vendorId == null){throw Exception("Vendor Id doesn't exist while updating record")}
         var existingVendorDetails = vendorPersonalDetails.vendorId?.let { findByVendorId(it) } ?: throw Exception("Vendor details does not exist for vendorId: ${vendorPersonalDetails.vendorId} and username: ${vendorPersonalDetails.username}")
         existingVendorDetails = updateRecords(existingVendorDetails, vendorPersonalDetails)
         persist(existingVendorDetails)
     }
-
-//    @Transactional(rollbackOn = [Exception::class])
-//    fun twoUpdates(username: String, exception: Boolean){
-//        val vendorPersonalDetails = find("username = ?1", username).firstResult() ?: throw Exception("Vendor details does not exist for username: $username")
-//        vendorPersonalDetails.firstName = "first"
-//        persist(vendorPersonalDetails)
-//        logger.info("Update once for username: $username")
-//        if(exception){
-//            throw Exception("testing transaction")
-//        }
-//        vendorPersonalDetails.firstName = "second"
-//        persist(vendorPersonalDetails)
-//        logger.info("Updated twice for username: $username")
-//    }
 
     suspend fun findByVendorUsername(username: String): VendorPersonalDetails? {
         return find("vendorId = ?1", username).firstResult()
