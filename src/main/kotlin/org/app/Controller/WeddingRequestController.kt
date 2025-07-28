@@ -2,6 +2,7 @@ package org.app.Controller
 
 import jakarta.ws.rs.core.Response
 import kotlinx.coroutines.runBlocking
+import org.apache.logging.log4j.LogManager
 import org.app.Repository.OfferRepository
 import org.app.Repository.WeddingRequestRepository
 import org.app.dto.OfferDto
@@ -10,14 +11,19 @@ import org.eclipse.microprofile.graphql.GraphQLApi
 import org.eclipse.microprofile.graphql.Mutation
 import org.eclipse.microprofile.graphql.Query
 import java.util.UUID
-import java.util.logging.Logger
+import org.apache.logging.log4j.Logger
 
 @GraphQLApi
 class WeddingRequestController(
     private val weddingRequestRepository: WeddingRequestRepository,
-    private val offerRepository: OfferRepository,
-    private val logger:Logger
+    private val offerRepository: OfferRepository
 ) {
+
+    //TODO: get wedding request by username for client profile with limit
+    // TODO: get wedding request random with limit
+    // TODO: get wedding request with filters
+
+    private val logger: Logger = LogManager.getLogger(WeddingRequestController::class.java)
 
     @Query("request")
     fun getWeddingRequest(id: UUID): Response{

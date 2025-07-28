@@ -6,9 +6,10 @@ import org.app.Entity.VendorPersonalDetails
 import org.eclipse.microprofile.graphql.Input
 import java.util.*
 
+//TODO: consider for dto to entity MapStruct, ModelMapper, or simple Kotlin extension functions
 @Input("VendorPersonalDetailsDto")
 data class VendorPersonalDetailsDto @JsonbCreator constructor(
-    var firstName: String? = null,
+    var firstName: String,
     var bio: String? = null,
     var city: String? = null,
     var profilePicture: String? = null,
@@ -16,8 +17,7 @@ data class VendorPersonalDetailsDto @JsonbCreator constructor(
     var profession: String? = null,
     var phone: String? = null,
     var email: String? = null,
-    var vendorId: UUID? = null,
-    var lastName: String? = null,
+    var lastName: String,
     var password: String? = null,
     @JsonProperty("username")
     var username: String
@@ -32,7 +32,6 @@ data class VendorPersonalDetailsDto @JsonbCreator constructor(
         profession = this@VendorPersonalDetailsDto.profession
         phone = this@VendorPersonalDetailsDto.phone
         email = this@VendorPersonalDetailsDto.email
-        vendorId = this@VendorPersonalDetailsDto.vendorId
         lastName = this@VendorPersonalDetailsDto.lastName
         password = this@VendorPersonalDetailsDto.password
         username = this@VendorPersonalDetailsDto.username
