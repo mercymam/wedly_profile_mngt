@@ -43,7 +43,7 @@ class VendorGraphQLController(
             validateNames(firstName, lastName)
             logger.info("Creating profile for vendor with firstName {} and lastName {}", firstName, lastName)
 
-            val vendorEntity = vendorPersonalDetails.convertToEntity()
+            val vendorEntity = vendorPersonalDetailsMapper.toEntity(vendorPersonalDetails)
             val vendorId = runBlocking {vendorRepo.createProfile(vendorEntity)}
 
             logger.info("Successfully created profile: vendorId {}, firstName {} and lastName {}", vendorId, firstName, lastName)
@@ -57,7 +57,7 @@ class VendorGraphQLController(
 
     @Mutation("updateVendorDetails")
     fun updateVendorProfile(@Name("vendorPersonalDetails") vendorPersonalDetails: VendorPersonalDetailsDto): GraphQLResponse {
-        val vendorEntity = vendorPersonalDetails.convertToEntity()
+        val vendorEntity = vendorPersonalDetailsMapper.toEntity(vendorPersonalDetails)
         val firstName = vendorPersonalDetails.firstName
         val lastName = vendorPersonalDetails.lastName
 
