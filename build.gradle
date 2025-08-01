@@ -1,6 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version "2.0.21"
     id "org.jetbrains.kotlin.plugin.allopen" version "2.0.21"
+    id "org.jetbrains.kotlin.kapt" version "2.0.21"
     id 'io.quarkus'
 }
 
@@ -25,6 +26,8 @@ dependencies {
     implementation 'io.quarkus:quarkus-rest'
     implementation 'io.quarkus:quarkus-jdbc-postgresql'
     implementation 'org.apache.logging.log4j:log4j-api-kotlin:1.5.0'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    kapt 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'

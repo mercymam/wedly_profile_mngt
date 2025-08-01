@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.json.bind.annotation.JsonbCreator
 import org.app.Entity.VendorPersonalDetails
 import org.eclipse.microprofile.graphql.Input
-import java.util.*
 
 //TODO: consider for dto to entity MapStruct, ModelMapper, or simple Kotlin extension functions
 @Input("VendorPersonalDetailsDto")
@@ -21,7 +20,7 @@ data class VendorPersonalDetailsDto @JsonbCreator constructor(
     var password: String? = null,
     @JsonProperty("username")
     var username: String
-){
+): WeddingDetails{
 
     fun convertToEntity() = VendorPersonalDetails().apply {
         firstName = this@VendorPersonalDetailsDto.firstName
