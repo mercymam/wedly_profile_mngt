@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.app.dto.GraphQLResponse
 import org.app.Repository.VendorPersonRepository
-import org.app.Entity.VendorPersonalDetails
 import org.app.Mapper.VendorPersonalDetailsMapper
 import org.app.dto.VendorPersonalDetailsDto
 import org.eclipse.microprofile.graphql.*
@@ -20,7 +19,7 @@ class VendorGraphQLController(
     private val logger: Logger = LogManager.getLogger(VendorGraphQLController::class.java)
 
     @Query("searchVendor")
-    @Description("Get all the personal details for a vendor")
+    @Description("Get a list of vendor details based on search")
     fun searchVendorDetail(
         @Name("name") name: String
     ): List<VendorPersonalDetailsDto> {
