@@ -1,14 +1,43 @@
 package org.app.dto
 
+import org.eclipse.microprofile.graphql.Interface
 import java.util.*
 
+@Interface
 interface WeddingDetails {}
 
-data class GraphQLResponse<T> (
+data class GraphQLResponse (
+    val id: UUID? =null,
+    val message: String? =null,
+    val status: Status
+)
+
+data class VendorListResponse (
     val id: UUID? =null,
     val message: String? =null,
     val status: Status,
-    val weddingDetails: T? = null
+    val weddingDetails: List<VendorPersonalDetailsDto>? = null
+)
+
+data class OfferResponse (
+    val id: UUID? =null,
+    val message: String? =null,
+    val status: Status,
+    val weddingDetails: OfferDto? = null
+)
+
+data class WeddingRequestResponse (
+    val id: UUID? =null,
+    val message: String? =null,
+    val status: Status,
+    val weddingDetails: WeddingRequestDto? = null
+)
+
+data class WeddingRequestListResponse (
+    val id: UUID? =null,
+    val message: String? =null,
+    val status: Status,
+    val weddingDetails: List<WeddingRequestDto>? = null
 )
 
 enum class Status {

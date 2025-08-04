@@ -7,6 +7,7 @@ import org.app.dto.GraphQLResponse
 import org.app.Repository.VendorPersonRepository
 import org.app.Mapper.VendorPersonalDetailsMapper
 import org.app.dto.Status
+import org.app.dto.VendorListResponse
 import org.app.dto.VendorPersonalDetailsDto
 import org.eclipse.microprofile.graphql.*
 
@@ -22,25 +23,28 @@ class VendorGraphQLController(
     @Description("Get a list of vendor details based on search")
     fun searchVendorDetail(
         @Name("name") name: String
-    ): GraphQLResponse<List<VendorPersonalDetailsDto>> {
+    ): VendorListResponse {
         try {
+            if (name.isBlank()) {
+                throw IllegalArgumentException("Name must not be blank")
+            }
             logger.info("Fetching vendor with name: $name")
 
             val vendorDetails = runBlocking { vendorRepo.findByName(name) }
             val vendorDetailsDto = vendorDetails.map { vendorDetail ->
                 vendorPersonalDetailsMapper.toDto(vendorDetail)
             }
-            return GraphQLResponse(status = Status.OK, weddingDetails = vendorDetailsDto)
+            return VendorListResponse(status = Status.OK, weddingDetails = vendorDetailsDto)
         }catch (ex: Exception){
             logger.error("Error occurred while trying to search vendorPersonalDetails with name $name ", ex.message)
-            return GraphQLResponse(status = Status.INTERNAL_SERVER_ERROR, message = "An error occurred while finding profile for name: $name. Exception: $ex")
+            return VendorListResponse(status = Status.INTERNAL_SERVER_ERROR, message = "An error occurred while finding profile for name: $name. Exception: $ex")
 
         }
     }
 
 
     @Mutation("createVendor")
-    fun createVendorProfile(@Name("vendorPersonalDetails") vendorPersonalDetails: VendorPersonalDetailsDto): GraphQLResponse<Unit> {
+    fun createVendorProfile(@Name("vendorPersonalDetails") vendorPersonalDetails: VendorPersonalDetailsDto): GraphQLResponse {
         val firstName = vendorPersonalDetails.firstName
         val lastName = vendorPersonalDetails.lastName
         val username = vendorPersonalDetails.username
@@ -62,7 +66,7 @@ class VendorGraphQLController(
     }
 
     @Mutation("updateVendorDetails")
-    fun updateVendorProfile(@Name("vendorPersonalDetails") vendorPersonalDetails: VendorPersonalDetailsDto): GraphQLResponse<Unit> {
+    fun updateVendorProfile(@Name("vendorPersonalDetails") vendorPersonalDetails: VendorPersonalDetailsDto): GraphQLResponse {
         val firstName = vendorPersonalDetails.firstName
         val lastName = vendorPersonalDetails.lastName
         val username = vendorPersonalDetails.username

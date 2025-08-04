@@ -4,31 +4,43 @@ import jakarta.json.bind.annotation.JsonbCreator
 import jakarta.json.bind.annotation.JsonbProperty
 import org.app.Entity.OfferEntity
 import org.app.Entity.WeddingRequestEntity
-import java.awt.Image
+import org.eclipse.microprofile.graphql.Input
+import org.eclipse.microprofile.graphql.Name
 import java.util.*
 
+@Input("WeddingRequestInput")
 data class WeddingRequestDto @JsonbCreator constructor(
-    @JsonbProperty("postId")
-    val postId: UUID?= null,
-    @JsonbProperty("offerId")
-    val offerId: List<UUID>?=null,
-    @JsonbProperty("username")
-    val username: String?=null,
-    @JsonbProperty("weddingType")
-    val weddingType: WeddingType ?=null, //TODO: maybe change to enum for the types of wedding supported
-    @JsonbProperty("eventDate")
-    val eventDate: Date?=null,
-    @JsonbProperty("location")
-    val location: String?=null,  //TODO: change location to be its own type with postcode, line1, line2
-    @JsonbProperty("serviceNeeded")
-    val serviceNeeded: String?=null, //TODO: change to selected types of services
-    @JsonbProperty("budgetRange")
-    val budgetRange: Float?=null,
-    @JsonbProperty("description")
-    val description: String?=null,
-    @JsonbProperty("inspirationPhotos")
-    val inspirationPhotos: String?=null //TODO: store images in s3 bucket
-): WeddingDetails{
+    @field:Name("postId")
+    @get:Name("postId")
+    val postId: UUID? = null,
+
+    @field:Name("offerId")
+    val offerId: List<UUID>? = null,
+
+    @field:Name("username")
+    val username: String? = null,
+
+    @field:Name("weddingType")
+    val weddingType: WeddingType,
+
+    @field:Name("eventDate")
+    val eventDate: Date,
+
+    @field:Name("location")
+    val location: String? = null,
+
+    @field:Name("serviceNeeded")
+    val serviceNeeded: String,
+
+    @field:Name("budgetRange")
+    val budgetRange: Float? = null,
+
+    @field:Name("description")
+    val description: String,
+
+    @field:Name("inspirationPhotos")
+    val inspirationPhotos: String? = null
+) {
     fun convertToEntity(): WeddingRequestEntity {
         return WeddingRequestEntity().apply {
             username = this.username
@@ -44,22 +56,24 @@ data class WeddingRequestDto @JsonbCreator constructor(
         }
     }
 }
-enum class WeddingType{
+
+enum class WeddingType {
     WHITE_WEDDING, TRADITIONAL, DESTINATION
 }
 
+@Input("OfferDtoInput")
 data class OfferDto @JsonbCreator constructor(
-    @JsonbProperty("offerId")
+    @field:Name("offerId")
     val offerId: UUID,
-    @JsonbProperty("postId")
+    @field:Name("postId")
     val postId: UUID,
-    @JsonbProperty("username")
+    @field:Name("username")
     val username: String,
-    @JsonbProperty("offerDescription")
+    @field:Name("offerDescription")
     val offerDescription: String,
-    @JsonbProperty("amount")
+    @field:Name("amount")
     val amount: Float
-): WeddingDetails {
+) : WeddingDetails {
     fun convertToEntity(): OfferEntity {
         return OfferEntity().apply {
             offerId = this.offerId

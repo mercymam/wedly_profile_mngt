@@ -29,7 +29,7 @@ class WeddingRequestController(
         username: String,
         offset: Int = 0,
         limit: Int = 10
-    ): GraphQLResponse<List<WeddingRequestDto>> {
+    ): WeddingRequestListResponse {
         try {
             logger.info("Finding user: {} wedding request with limit: {}", username, limit)
 
@@ -37,10 +37,10 @@ class WeddingRequestController(
             val weddingRequestsDto = weddingRequests.map { weddingRequestMapper.toDto(it) }
 
             logger.info("Found wedding request by user {} of size {}", username, weddingRequests.size)
-            return GraphQLResponse(weddingDetails = weddingRequestsDto, status = Status.OK)
+            return WeddingRequestListResponse(weddingDetails = weddingRequestsDto, status = Status.OK)
         } catch (e: Exception) {
             logger.error("Error occurred while getting wedding request with username: $username", e)
-            return GraphQLResponse(message = e.message, status = Status.INTERNAL_SERVER_ERROR)
+            return WeddingRequestListResponse(message = e.message, status = Status.INTERNAL_SERVER_ERROR)
         }
     }
 
@@ -55,7 +55,7 @@ class WeddingRequestController(
         endBudgetRange: Float,
         offset: Int = 0,
         limit: Int = 50
-    ): GraphQLResponse<List<WeddingRequestDto>> {
+    ): WeddingRequestListResponse {
         val filter = "startDate: {}, endDate: {}, location: {}, weddingType: {}, serviceNeeded: {}, startBudgetRange: {}, endBudgetRange: {}, offset: {} limit: {}"
         try {
             logger.info(
@@ -98,7 +98,7 @@ class WeddingRequestController(
                 offset,
                 limit
             )
-            return GraphQLResponse(weddingDetails = weddingRequestsDto, status = Status.OK)
+            return WeddingRequestListResponse(weddingDetails = weddingRequestsDto, status = Status.OK)
         } catch (e: Exception) {
             logger.error("Error occurred while getting wedding request with filter: $filter",
                 startDate,
@@ -111,13 +111,13 @@ class WeddingRequestController(
                 offset,
                 limit,
                 e)
-            return GraphQLResponse(message = e.message, status = Status.INTERNAL_SERVER_ERROR)
+            return WeddingRequestListResponse(message = e.message, status = Status.INTERNAL_SERVER_ERROR)
         }
     }
 
 
     @Query("request")
-    fun getWeddingRequest(id: UUID): GraphQLResponse<WeddingRequestDto> {
+    fun getWeddingRequest(id: UUID): WeddingRequestResponse {
         try {
             logger.info("Finding wedding request by Id: {}", id)
 
@@ -130,22 +130,22 @@ class WeddingRequestController(
                     weddingRequest.username,
                     weddingRequest.serviceNeeded
                 )
-                return GraphQLResponse(
+                return WeddingRequestResponse(
                     weddingDetails = weddingRequestMapper.toDto(weddingRequest),
                     status = Status.OK
                 )
             }
 
             logger.info("No wedding request found for id: {}", id)
-            return GraphQLResponse(status = Status.NO_CONTENT)
+            return WeddingRequestResponse(status = Status.NO_CONTENT)
         } catch (e: Exception) {
             logger.error("Error occurred while getting wedding request with id: $id", e)
-            return GraphQLResponse(message = e.message, status = Status.INTERNAL_SERVER_ERROR)
+            return WeddingRequestResponse(message = e.message, status = Status.INTERNAL_SERVER_ERROR)
         }
     }
 
     @Query("offer")
-    fun getWeddingOffer(id: UUID): GraphQLResponse<OfferDto> {
+    fun getWeddingOffer(id: UUID): OfferResponse {
         try {
             logger.info("Finding wedding offer by Id: {}", id)
             val weddingOffer = runBlocking { offerRepository.findById(id) }
@@ -157,24 +157,24 @@ class WeddingRequestController(
                     weddingOffer.username,
                     weddingOffer.amount
                 )
-                return GraphQLResponse(
+                return OfferResponse(
                     weddingDetails = offerMapper.toDto(weddingOffer),
                     status = Status.OK,
                 )
             }
 
             logger.info("No wedding offer found for id: {}", id)
-            return GraphQLResponse(status = Status.NO_CONTENT)
+            return OfferResponse(status = Status.NO_CONTENT)
         } catch (e: Exception) {
-            return GraphQLResponse(message = e.message, status = Status.INTERNAL_SERVER_ERROR)
+            return OfferResponse(message = e.message, status = Status.INTERNAL_SERVER_ERROR)
         }
     }
 
     @Mutation("request")
-    fun postWeddingRequest(request: WeddingRequestDto): GraphQLResponse<Unit> {
+    fun postWeddingRequest(request: WeddingRequestDto): GraphQLResponse {
         try {
-            val entity = request.convertToEntity()
             logger.info("Creating new wedding request by Id: ${request.postId}")
+            val entity = request.convertToEntity()
 
             val weddingRequestId = runBlocking { weddingRequestRepository.createRequest(entity) }
             val successMessage =
@@ -195,7 +195,7 @@ class WeddingRequestController(
     }
 
     @Mutation("offer")
-    fun postWeddingOffer(weddingOffer: OfferDto): GraphQLResponse<Unit> {
+    fun postWeddingOffer(weddingOffer: OfferDto): GraphQLResponse {
         try {
             val entity = weddingOffer.convertToEntity()
             logger.info("Creating new wedding offer by offerId: ${weddingOffer.offerId} for user: ${weddingOffer.username} and postId: ${weddingOffer.postId}")
