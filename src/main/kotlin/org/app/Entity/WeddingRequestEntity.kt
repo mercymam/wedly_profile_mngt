@@ -31,12 +31,15 @@ class WeddingRequestEntity: PanacheEntityBase {
     @Column(name = "service_needed", nullable = false)
     lateinit var  serviceNeeded: String
 
-    @Column(name = "budget_range", nullable = false)
-    lateinit var  budgetRange: Integer
+    @Column(name = "start_budget_range", nullable = false)
+    lateinit var  startBudgetRange: Integer
+
+    @Column(name = "end_budget_range", nullable = false)
+    lateinit var  endBudgetRange: Integer
 
     @Column(name = "description", nullable = false)
     lateinit var  description: String
 
     @Column(name = "inspiration_photos", nullable = false)
-    lateinit var  inspirationPhotos: ByteArray
+    lateinit var  inspirationPhotos: String
 }

@@ -1,13 +1,21 @@
 package org.app.dto
 
-import jakarta.ws.rs.core.Response
 import java.util.*
 
 interface WeddingDetails {}
 
-data class GraphQLResponse (
+data class GraphQLResponse<T> (
     val id: UUID? =null,
     val message: String? =null,
-    val status: Response.Status,
-    val weddingDetails: WeddingDetails? = null
+    val status: Status,
+    val weddingDetails: T? = null
 )
+
+enum class Status {
+    OK,
+    NO_CONTENT,
+    INTERNAL_SERVER_ERROR,
+    ERROR,
+    UNAUTHORIZED,
+    NOT_FOUND
+}

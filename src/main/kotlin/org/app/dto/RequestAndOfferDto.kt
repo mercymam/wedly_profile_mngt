@@ -19,15 +19,15 @@ data class WeddingRequestDto @JsonbCreator constructor(
     @JsonbProperty("eventDate")
     val eventDate: Date?=null,
     @JsonbProperty("location")
-    val location: String?=null,
+    val location: String?=null,  //TODO: change location to be its own type with postcode, line1, line2
     @JsonbProperty("serviceNeeded")
-    val serviceNeeded: String?=null,
+    val serviceNeeded: String?=null, //TODO: change to selected types of services
     @JsonbProperty("budgetRange")
     val budgetRange: Float?=null,
     @JsonbProperty("description")
     val description: String?=null,
     @JsonbProperty("inspirationPhotos")
-    val inspirationPhotos: Image?=null
+    val inspirationPhotos: String?=null //TODO: store images in s3 bucket
 ): WeddingDetails{
     fun convertToEntity(): WeddingRequestEntity {
         return WeddingRequestEntity().apply {
@@ -36,7 +36,8 @@ data class WeddingRequestDto @JsonbCreator constructor(
             eventDate = this.eventDate
             location = this.location
             serviceNeeded = this.serviceNeeded
-            budgetRange = this.budgetRange
+            startBudgetRange = this.startBudgetRange
+            endBudgetRange = this.endBudgetRange
             description = this.description
             inspirationPhotos = this.inspirationPhotos
 //            offers = offerId //TODO: how do i map it???
