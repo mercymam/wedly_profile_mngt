@@ -1,18 +1,19 @@
 package org.app.Entity
 
-import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntity
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
-import jakarta.persistence.*
-import java.util.UUID
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 
 @Entity
-@Table(name = "vendor_details")
-class VendorPersonalDetails: PanacheEntityBase{
+@Table(name = "customer_details")
+class CustomerPersonalDetails: PanacheEntityBase {
     @Column(name = "first_name")
     lateinit var firstName: String
 
     @Column(name = "bio")
-    lateinit var bio: String
+    var bio: String? = null
 
     @Column(name = "location")
     lateinit var location: String
@@ -22,9 +23,6 @@ class VendorPersonalDetails: PanacheEntityBase{
 
     @Column(name = "cover_photo")
     var coverPhoto: String? = null
-
-    @Column(name = "profession")
-    lateinit var profession: String
 
     @Column(name = "phone_number")
     var phone: String? = null

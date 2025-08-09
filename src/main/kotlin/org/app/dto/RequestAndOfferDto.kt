@@ -5,17 +5,18 @@ import org.eclipse.microprofile.graphql.Input
 import org.eclipse.microprofile.graphql.Name
 import java.util.*
 
+//TODO: validate all amount and budget value to 2dp
 @Input("WeddingRequestInput")
 data class WeddingRequestDto @JsonbCreator constructor(
     @field:Name("postId")
     @get:Name("postId")
     val postId: Long? = null,
 
-    @field:Name("offerId")
-    val offerId: List<UUID>? = null,
+    @field:Name("offers")
+    val offers: List<UUID> = mutableListOf(),
 
     @field:Name("username")
-    val username: String? = null,
+    val username: String,
 
     @field:Name("weddingType")
     val weddingType: WeddingType,
@@ -24,13 +25,16 @@ data class WeddingRequestDto @JsonbCreator constructor(
     val eventDate: Date,
 
     @field:Name("location")
-    val location: String? = null,
+    val location: String,
 
     @field:Name("serviceNeeded")
     val serviceNeeded: String,
 
-    @field:Name("budgetRange")
-    val budgetRange: Float? = null,
+    @field:Name("startBudgetRange")
+    val startBudgetRange: Float? = null,
+
+    @field:Name("endBudgetRange")
+    val endBudgetRange: Float? = null,
 
     @field:Name("description")
     val description: String,
@@ -47,8 +51,8 @@ enum class WeddingType {
 data class OfferDto @JsonbCreator constructor(
     @field:Name("offerId")
     val offerId: Long,
-    @field:Name("postId")
-    val postId: UUID,
+    @field:Name("weddingRequest")
+    val weddingRequest: Long,
     @field:Name("username")
     val username: String,
     @field:Name("offerDescription")

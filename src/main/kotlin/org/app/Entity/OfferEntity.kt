@@ -15,12 +15,13 @@ class OfferEntity {
     @JoinColumn(name = "wedding_request_id", nullable = false)
     var weddingRequest: WeddingRequestEntity? = null
 
-    @Column(name = "username", nullable = false)
-    lateinit var username: String
+    @JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
+    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    lateinit var username: VendorPersonalDetails
 
     @Column(name = "offer_description", nullable = false)
     lateinit var offerDescription: String
 
     @Column(name = "amount", nullable = false)
-    var amount: Double ?= null
+    var amount: Float ?= null
 }
