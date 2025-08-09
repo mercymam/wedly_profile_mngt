@@ -11,7 +11,7 @@ class WeddingRequestEntity: PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
-    var postId: UUID? = null
+    var postId: Long? = null
 
     @OneToMany(mappedBy = "weddingRequest", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var offers: MutableList<OfferEntity> = mutableListOf()

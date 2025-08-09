@@ -17,7 +17,7 @@ class VendorPersonRepository : PanacheRepository<VendorPersonalDetails>{
     private val logger: Logger = LogManager.getLogger(VendorPersonRepository::class.java)
 
     suspend fun findByName(nameInput: String): List<VendorPersonalDetails> {
-        logger.info("Making a call to the database to search for user with name: $nameInput")
+        logger.info("Searching for user with name: $nameInput")
         val names = nameInput.trim().split("\\s+.toRegex()")
         return when(names.size){
             1 -> {
@@ -40,20 +40,21 @@ class VendorPersonRepository : PanacheRepository<VendorPersonalDetails>{
         }
     }
 
-    suspend fun findByVendorId(vendorId: UUID): VendorPersonalDetails? {
+    suspend fun findByVendorId(vendorId: Long): VendorPersonalDetails? {
         return find("vendorId = ?1", vendorId).firstResult()
     }
 
-    //TODO: set constraints for username to be unique, so creating profile fails if non-unique#
-    //check for if username exist
     @Transactional
-    suspend fun createProfile(vendorPersonalDetails: VendorPersonalDetails): UUID{
+    suspend fun createProfile(vendorPersonalDetails: VendorPersonalDetails): Long?{
+        if(findByVendorUsername(vendorPersonalDetails.username) != null) {
+            throw Exception("Vendor details with username ${vendorPersonalDetails.username} already exist")
+        }
         persist(vendorPersonalDetails)
         return vendorPersonalDetails.vendorId
     }
 
     @Transactional
-    suspend fun updateVendorProfile(vendorPersonalDetails: VendorPersonalDetails): UUID{
+    suspend fun updateVendorProfile(vendorPersonalDetails: VendorPersonalDetails): Long?{
         var existingVendorDetails = vendorPersonalDetails.vendorId?.let { findByVendorId(it) } ?: throw Exception("Vendor details does not exist for vendorId: ${vendorPersonalDetails.vendorId} and username: ${vendorPersonalDetails.username}")
         existingVendorDetails = updateRecords(existingVendorDetails, vendorPersonalDetails)
         persist(existingVendorDetails)

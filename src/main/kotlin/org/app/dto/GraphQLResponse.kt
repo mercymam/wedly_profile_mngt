@@ -7,20 +7,20 @@ import java.util.*
 interface WeddingDetails {}
 
 data class GraphQLResponse (
-    val id: UUID? =null,
+    val id: Long? =null,
     val message: String? =null,
     val status: Status
 )
 
 data class VendorListResponse (
-    val id: UUID? =null,
+    val id: Long? =null,
     val message: String? =null,
     val status: Status,
     val weddingDetails: List<VendorPersonalDetailsDto>? = null
 )
 
 data class OfferResponse (
-    val id: UUID? =null,
+    val id: Long? =null,
     val message: String? =null,
     val status: Status,
     val weddingDetails: OfferDto? = null

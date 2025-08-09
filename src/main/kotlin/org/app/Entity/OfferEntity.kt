@@ -1,17 +1,15 @@
 package org.app.Entity
 
 import jakarta.persistence.*
-import java.util.*
 
 @Entity
 @Table(name = "offers")
 class OfferEntity {
 
-
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "offer_id")
-    lateinit var offerId: UUID
+    var offerId: Long ? = null
 
     @ManyToOne
     @JoinColumn(name = "wedding_request_id", nullable = false)

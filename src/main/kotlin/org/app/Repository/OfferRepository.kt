@@ -12,12 +12,12 @@ class OfferRepository: PanacheRepository<OfferEntity> {
         return find("offer_id = ?1", id).firstResult()
     }
 
-    suspend fun createOffer(offer: OfferEntity): UUID {
+    suspend fun createOffer(offer: OfferEntity): Long? {
         persist(offer)
         return offer.offerId
     }
 
-    suspend fun updateOffer(offer: OfferEntity): UUID {
+    suspend fun updateOffer(offer: OfferEntity): Long? {
         var existingOfferDetails = offer.offerId?.let { findById(it) } ?: throw Exception("Offer details does not exist for offerId: ${offer.offerId} and username: ${offer.username}")
         existingOfferDetails = updateRecords(existingOfferDetails, offer)
         persist(existingOfferDetails)

@@ -116,7 +116,7 @@ class WeddingRequestController(
     }
 
 
-    @Query("request")
+    @Query("getWeddingRequest")
     fun getWeddingRequest(id: UUID): WeddingRequestResponse {
         try {
             logger.info("Finding wedding request by Id: {}", id)
@@ -144,7 +144,7 @@ class WeddingRequestController(
         }
     }
 
-    @Query("offer")
+    @Query("getWeddingOffer")
     fun getWeddingOffer(id: UUID): OfferResponse {
         try {
             logger.info("Finding wedding offer by Id: {}", id)
@@ -170,11 +170,11 @@ class WeddingRequestController(
         }
     }
 
-    @Mutation("request")
+    @Mutation("createWeddingRequest")
     fun postWeddingRequest(request: WeddingRequestDto): GraphQLResponse {
         try {
             logger.info("Creating new wedding request by Id: ${request.postId}")
-            val entity = request.convertToEntity()
+            val entity = weddingRequestMapper.toEntity(request)
 
             val weddingRequestId = runBlocking { weddingRequestRepository.createRequest(entity) }
             val successMessage =
@@ -194,10 +194,10 @@ class WeddingRequestController(
         }
     }
 
-    @Mutation("offer")
+    @Mutation("createWeddingOffer")
     fun postWeddingOffer(weddingOffer: OfferDto): GraphQLResponse {
         try {
-            val entity = weddingOffer.convertToEntity()
+            val entity = offerMapper.toEntity(weddingOffer)
             logger.info("Creating new wedding offer by offerId: ${weddingOffer.offerId} for user: ${weddingOffer.username} and postId: ${weddingOffer.postId}")
 
             val offerId = runBlocking { offerRepository.createOffer(entity) }

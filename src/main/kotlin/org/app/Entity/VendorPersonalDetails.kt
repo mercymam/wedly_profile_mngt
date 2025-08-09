@@ -1,46 +1,47 @@
 package org.app.Entity
 
+import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntity
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
 import java.util.UUID
 
 @Entity
 @Table(name = "vendor_details")
-class VendorPersonalDetails: PanacheEntityBase {
+class VendorPersonalDetails: PanacheEntityBase{
     @Column(name = "first_name")
-    var firstName: String? = "Me"
+    lateinit var firstName: String
 
     @Column(name = "bio")
-    var bio: String? = null
+    lateinit var bio: String
 
     @Column(name = "location")
-    var city: String? = null
+    lateinit var city: String
 
-    @Column(name = "profile_picture", columnDefinition = "BYTEA")
-    var profilePicture: String? = null
+    @Column(name = "profile_picture")
+    lateinit var profilePicture: String
 
-    @Column(name = "cover_photo", columnDefinition = "BYTEA")
-    var coverPhoto: String? = null
+    @Column(name = "cover_photo")
+    lateinit var coverPhoto: String
 
     @Column(name = "profession")
-    var profession: String? = null
+    lateinit var profession: String
 
     @Column(name = "phone_number")
-    var phone: String? = null
+    lateinit var phone: String
 
     @Column(name = "email_address")
-    var email: String? = null
+    lateinit var email: String
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vendor_id")
-    lateinit var vendorId: UUID
+    var vendorId: Long? = null
 
     @Column(name = "last_name")
-    var lastName: String? = null
+    lateinit var lastName: String
 
     @Column(name = "password")
-    var password: String? = null
+    lateinit var password: String
 
     @Column(name = "username")
     lateinit var username: String
