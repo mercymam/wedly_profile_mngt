@@ -14,8 +14,9 @@ class VendorPersonalDetails: PanacheEntityBase{
     @Column(name = "bio")
     lateinit var bio: String
 
-    @Column(name = "location")
-    lateinit var location: String
+    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
+    lateinit var location: Location
 
     @Column(name = "profile_picture")
     var profilePicture: String? = null
