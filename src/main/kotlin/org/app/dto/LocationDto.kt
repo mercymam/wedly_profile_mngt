@@ -4,7 +4,7 @@ import jakarta.json.bind.annotation.JsonbCreator
 import org.eclipse.microprofile.graphql.Input
 import org.eclipse.microprofile.graphql.Name
 
-@Input("LocationDto")
+@Input("LocationDataObject")
 data class LocationDto @JsonbCreator constructor(
     @field:Name("postcode")
     val postcode: String ?= null,
