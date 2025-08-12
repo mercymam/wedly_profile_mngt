@@ -13,7 +13,7 @@ class OfferEntity {
 
     @ManyToOne
     @JoinColumn(name = "wedding_request_id", nullable = false)
-    var weddingRequest: WeddingRequestEntity? = null
+    lateinit var weddingRequest: WeddingRequestEntity
 
     @JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
     @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)

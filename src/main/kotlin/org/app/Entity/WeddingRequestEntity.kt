@@ -2,7 +2,6 @@ package org.app.Entity
 
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
-import org.app.dto.LocationDto
 import org.app.dto.WeddingType
 import java.util.*
 

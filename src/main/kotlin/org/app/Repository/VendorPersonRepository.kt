@@ -40,25 +40,21 @@ class VendorPersonRepository : PanacheRepository<VendorPersonalDetails>{
         }
     }
 
-    suspend fun findByVendorId(vendorId: Long): VendorPersonalDetails? {
-        return find("vendorId = ?1", vendorId).firstResult()
-    }
-
     @Transactional
-    suspend fun createProfile(vendorPersonalDetails: VendorPersonalDetails): Long?{
+    suspend fun createProfile(vendorPersonalDetails: VendorPersonalDetails): String {
         if(findByVendorUsername(vendorPersonalDetails.username) != null) {
             throw Exception("Vendor details with username ${vendorPersonalDetails.username} already exist")
         }
         persist(vendorPersonalDetails)
-        return vendorPersonalDetails.vendorId
+        return vendorPersonalDetails.username
     }
 
     @Transactional
-    suspend fun updateVendorProfile(vendorPersonalDetails: VendorPersonalDetails): Long?{
-        var existingVendorDetails = vendorPersonalDetails.vendorId?.let { findByVendorId(it) } ?: throw Exception("Vendor details does not exist for vendorId: ${vendorPersonalDetails.vendorId} and username: ${vendorPersonalDetails.username}")
+    suspend fun updateVendorProfile(vendorPersonalDetails: VendorPersonalDetails): String {
+        var existingVendorDetails = vendorPersonalDetails.username.let { findByVendorUsername(it) } ?: throw Exception("Vendor details does not exist for vendorId: ${vendorPersonalDetails.username} and username: ${vendorPersonalDetails.username}")
         existingVendorDetails = updateRecords(existingVendorDetails, vendorPersonalDetails)
         persist(existingVendorDetails)
-        return vendorPersonalDetails.vendorId
+        return vendorPersonalDetails.username
     }
 
     suspend fun findByVendorUsername(username: String): VendorPersonalDetails? {
@@ -67,10 +63,9 @@ class VendorPersonRepository : PanacheRepository<VendorPersonalDetails>{
 
     suspend fun updateRecords(existingVendorDetail: VendorPersonalDetails, newVendorDetail: VendorPersonalDetails): VendorPersonalDetails {
         existingVendorDetail.lastName = newVendorDetail.lastName
-        existingVendorDetail.vendorId = newVendorDetail.vendorId
         existingVendorDetail.firstName = newVendorDetail.firstName
         existingVendorDetail.bio = newVendorDetail.bio
-        existingVendorDetail.city= newVendorDetail.city
+        existingVendorDetail.location= newVendorDetail.location
         existingVendorDetail.profilePicture = newVendorDetail.profilePicture
         existingVendorDetail.coverPhoto = newVendorDetail.coverPhoto
         existingVendorDetail.profession =newVendorDetail.profession

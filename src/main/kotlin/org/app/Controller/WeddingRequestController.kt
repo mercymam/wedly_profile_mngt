@@ -198,11 +198,11 @@ class WeddingRequestController(
     fun postWeddingOffer(weddingOffer: OfferDto): GraphQLResponse {
         try {
             val entity = offerMapper.toEntity(weddingOffer)
-            logger.info("Creating new wedding offer by offerId: ${weddingOffer.offerId} for user: ${weddingOffer.username} and postId: ${weddingOffer.postId}")
+            logger.info("Creating new wedding offer by offerId: ${weddingOffer.offerId} for user: ${weddingOffer.username} and postId: ${weddingOffer.weddingRequest}")
 
             val offerId = runBlocking { offerRepository.createOffer(entity) }
             val successMessage =
-                "Successfully posted wedding offer for user ${weddingOffer.username} and amount ${weddingOffer.amount} for postId ${weddingOffer.postId}"
+                "Successfully posted wedding offer for user ${weddingOffer.username} and amount ${weddingOffer.amount} for postId ${weddingOffer.weddingRequest}"
             logger.info(successMessage)
 
             return GraphQLResponse(

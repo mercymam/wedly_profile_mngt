@@ -3,7 +3,6 @@ package org.app.Entity
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntity
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.*
-import java.util.UUID
 
 @Entity
 @Table(name = "vendor_details")
