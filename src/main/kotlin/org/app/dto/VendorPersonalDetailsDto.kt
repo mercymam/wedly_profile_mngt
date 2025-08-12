@@ -17,6 +17,7 @@ data class VendorPersonalDetailsDto @JsonbCreator constructor(
     var email: String,
     var lastName: String,
     var password: String,
+    var location: LocationDto,
     @JsonProperty("username")
     var username: String
 )

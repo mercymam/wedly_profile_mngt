@@ -5,9 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.app.Controller.VendorGraphQLController
 import org.app.Entity.VendorPersonalDetails
-import java.util.UUID
 
 //TODO: DB changes - indexing for firstname and lastname
 
