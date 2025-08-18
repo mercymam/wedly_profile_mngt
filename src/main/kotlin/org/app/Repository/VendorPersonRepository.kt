@@ -48,15 +48,19 @@ class VendorPersonRepository : PanacheRepository<VendorPersonalDetails>{
     }
 
     @Transactional
-    suspend fun updateVendorProfile(vendorPersonalDetails: VendorPersonalDetails): String {
-        var existingVendorDetails = vendorPersonalDetails.username.let { findByVendorUsername(it) } ?: throw Exception("Vendor details does not exist for vendorId: ${vendorPersonalDetails.username} and username: ${vendorPersonalDetails.username}")
+    suspend fun updateVendorProfile(vendorPersonalDetails: VendorPersonalDetails, username: String): String {
+        val newUsername = vendorPersonalDetails.username
+        var existingVendorDetails = findByVendorUsername(username) ?: throw Exception("Vendor details does not exist for username: $username")
+        if(newUsername != username && findByVendorUsername(newUsername) != null) {
+            throw Exception("Attempting to update username from $username to new username ${vendorPersonalDetails.username} which already exist. New username should be a unique username")
+        }
         existingVendorDetails = updateRecords(existingVendorDetails, vendorPersonalDetails)
         persist(existingVendorDetails)
         return vendorPersonalDetails.username
     }
 
     suspend fun findByVendorUsername(username: String): VendorPersonalDetails? {
-        return find("vendorId = ?1", username).firstResult()
+        return find("username = ?1", username).firstResult()
     }
 
     suspend fun updateRecords(existingVendorDetail: VendorPersonalDetails, newVendorDetail: VendorPersonalDetails): VendorPersonalDetails {

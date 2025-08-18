@@ -1,10 +1,7 @@
 package org.app.Entity
 
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "customer_details")
@@ -37,6 +34,10 @@ class CustomerPersonalDetails: PanacheEntityBase {
     lateinit var password: String
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "customer_id")
+    var id: Long? = null
+
     @Column(name = "username")
     lateinit var username: String
 }

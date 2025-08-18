@@ -48,7 +48,7 @@ class WeddingRequestRepository : PanacheRepository<WeddingRequestEntity> {
 
     suspend fun updateRequest(request: WeddingRequestEntity): Long? {
         var existingWeddingRequest = request.postId?.let { findById(it) }
-            ?: throw Exception("Vendor details does not exist for vendorId: ${request.postId} and username: ${request.username}")
+            ?: throw Exception("Vendor details does not exist for postId: ${request.postId} and username: ${request.customerId}")
         existingWeddingRequest = updateRecords(existingWeddingRequest, request)
         persist(existingWeddingRequest)
         return existingWeddingRequest.postId
@@ -56,7 +56,7 @@ class WeddingRequestRepository : PanacheRepository<WeddingRequestEntity> {
 
     fun updateRecords(existingRequest: WeddingRequestEntity, newRequest: WeddingRequestEntity): WeddingRequestEntity {
         existingRequest.weddingType = newRequest.weddingType
-        existingRequest.username = newRequest.username
+        existingRequest.customerId = newRequest.customerId
         existingRequest.eventDate = newRequest.eventDate
         existingRequest.location = newRequest.location
         existingRequest.serviceNeeded = newRequest.serviceNeeded

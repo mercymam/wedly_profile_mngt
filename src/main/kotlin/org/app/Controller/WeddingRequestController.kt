@@ -125,9 +125,9 @@ class WeddingRequestController(
 
             weddingRequest?.let {
                 logger.info(
-                    "Found wedding request by Id: {}, user {} and service {}",
+                    "Found wedding request by Id: {}, customer id {} and service {}",
                     id,
-                    weddingRequest.username,
+                    weddingRequest.customerId,
                     weddingRequest.serviceNeeded
                 )
                 return WeddingRequestResponse(
@@ -152,9 +152,9 @@ class WeddingRequestController(
 
             weddingOffer?.let {
                 logger.info(
-                    "Found wedding offer by Id: {}, user {} and amount {}",
+                    "Found wedding offer by Id: {}, vendor id {} and amount {}",
                     id,
-                    weddingOffer.username,
+                    weddingOffer.vendorId,
                     weddingOffer.amount
                 )
                 return OfferResponse(
@@ -178,7 +178,7 @@ class WeddingRequestController(
 
             val weddingRequestId = runBlocking { weddingRequestRepository.createRequest(entity) }
             val successMessage =
-                "Successfully created wedding request for user: ${request.username}, service: ${request.serviceNeeded} with id: $weddingRequestId"
+                "Successfully created wedding request for customer id: ${request.customerId}, service: ${request.serviceNeeded} with id: $weddingRequestId"
             logger.info(successMessage)
 
             return GraphQLResponse(
@@ -198,11 +198,11 @@ class WeddingRequestController(
     fun postWeddingOffer(weddingOffer: OfferDto): GraphQLResponse {
         try {
             val entity = offerMapper.toEntity(weddingOffer)
-            logger.info("Creating new wedding offer by offerId: ${weddingOffer.offerId} for user: ${weddingOffer.username} and postId: ${weddingOffer.weddingRequest}")
+            logger.info("Creating new wedding offer by offerId: ${weddingOffer.offerId} for vendor id: ${weddingOffer.vendorId} and postId: ${weddingOffer.weddingRequest}")
 
             val offerId = runBlocking { offerRepository.createOffer(entity) }
             val successMessage =
-                "Successfully posted wedding offer for user ${weddingOffer.username} and amount ${weddingOffer.amount} for postId ${weddingOffer.weddingRequest}"
+                "Successfully posted wedding offer for vendor id ${weddingOffer.vendorId} and amount ${weddingOffer.amount} for postId ${weddingOffer.weddingRequest}"
             logger.info(successMessage)
 
             return GraphQLResponse(

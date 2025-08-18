@@ -12,11 +12,11 @@ import org.mapstruct.Named
 abstract class OfferMapper {
 
     @Mapping(target = "weddingRequest", source = "weddingRequest", qualifiedByName = ["mapIdToWeddingRequest"])
-    @Mapping(target = "username", source = "username", qualifiedByName = ["mapUsernameToVendor"])
+    @Mapping(target = "vendorId", source = "vendorId", qualifiedByName = ["mapUsernameToVendor"])
     abstract fun toEntity(dto: OfferDto): OfferEntity
 
     @Mapping(target = "weddingRequest", source = "weddingRequest", qualifiedByName = ["mapRequestToId"])
-    @Mapping(target = "username", source = "username", qualifiedByName = ["mapVendorToUsername"])
+    @Mapping(target = "vendorId", source = "vendorId", qualifiedByName = ["mapVendorToUsername"])
     abstract fun toDto(entity: OfferEntity): OfferDto
 
     @Named("mapIdToWeddingRequest")

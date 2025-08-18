@@ -15,9 +15,9 @@ class OfferEntity {
     @JoinColumn(name = "wedding_request_id", nullable = false)
     lateinit var weddingRequest: WeddingRequestEntity
 
-    @JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
+    @JoinColumn(name = "vendor_id", referencedColumnName = "vendor_id", nullable = false)
     @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    lateinit var username: VendorPersonalDetails
+    lateinit var vendorId: VendorPersonalDetails
 
     @Column(name = "offer_description", nullable = false)
     lateinit var offerDescription: String

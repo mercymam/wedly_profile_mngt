@@ -17,9 +17,9 @@ class WeddingRequestEntity: PanacheEntityBase {
     @OneToMany(mappedBy = "weddingRequest", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var offers: MutableList<OfferEntity> = mutableListOf()
 
-    @JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
+    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id", nullable = false)
     @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    lateinit var username: CustomerPersonalDetails
+    lateinit var customerId: CustomerPersonalDetails
 
     @Enumerated(EnumType.STRING)
     @Column(name = "wedding_type", nullable = false)

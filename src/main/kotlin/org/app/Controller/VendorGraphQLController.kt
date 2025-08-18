@@ -54,11 +54,11 @@ class VendorGraphQLController(
             logger.info("Creating profile for vendor with username $username, firstName $firstName and lastName $lastName")
 
             val vendorEntity = vendorPersonalDetailsMapper.toEntity(vendorPersonalDetails)
-            val vendorId = runBlocking {vendorRepo.createProfile(vendorEntity)}
+            val entityUsername = runBlocking {vendorRepo.createProfile(vendorEntity)}
 
-            logger.info("Successfully created profile: vendorId $vendorId, firstName $firstName and lastName $lastName")
+            logger.info("Successfully created profile: username $entityUsername, firstName $firstName and lastName $lastName")
 
-            return GraphQLResponse(message = "Successfully created profile: vendorId $vendorId, firstName $firstName and lastName $lastName", status = Status.OK)
+            return GraphQLResponse(message = "Successfully created profile: username $entityUsername, firstName $firstName and lastName $lastName", status = Status.OK)
         }catch (ex: Exception){
             logger.error("Error occurred while trying to save vendorPersonalDetails with username $username, firstName $firstName and lastName $lastName", ex)
             return GraphQLResponse(status = Status.INTERNAL_SERVER_ERROR, message = "An error occurred while creating profile for firstName: $firstName and lastName: $lastName. Exception: $ex")
@@ -66,24 +66,24 @@ class VendorGraphQLController(
     }
 
     @Mutation("updateVendorDetails")
-    fun updateVendorProfile(@Name("vendorPersonalDetails") vendorPersonalDetails: VendorPersonalDetailsDto): GraphQLResponse {
+    fun updateVendorProfile(@Name("vendorPersonalDetails") vendorPersonalDetails: VendorPersonalDetailsDto,
+                            @Name("username")  username: String): GraphQLResponse {
         val firstName = vendorPersonalDetails.firstName
         val lastName = vendorPersonalDetails.lastName
-        val username = vendorPersonalDetails.username
 
         try{
             validateNames(firstName, lastName)
             logger.info("Updating vendor with username $username, firstName $firstName and lastName $lastName")
 
             val vendorEntity = vendorPersonalDetailsMapper.toEntity(vendorPersonalDetails)
-            val vendorId = runBlocking {
-                vendorRepo.updateVendorProfile(vendorEntity)
+            val entityUsername = runBlocking {
+                vendorRepo.updateVendorProfile(vendorEntity, username)
             }
 
-            return GraphQLResponse(message = "Successfully updated vendor details for vendorId: $vendorId", status = Status.OK)
+            return GraphQLResponse(message = "Successfully updated vendor details for username: $entityUsername", status = Status.OK)
         }catch (ex: Exception){
             logger.error("Error occurred while trying to updating vendorPersonalDetails with username $username, firstName $firstName and lastName $lastName", ex)
-            return GraphQLResponse(status = Status.INTERNAL_SERVER_ERROR, message = "An error occurred while updating profile for vendorId: ${vendorPersonalDetails.username}. Exception: $ex")
+            return GraphQLResponse(status = Status.INTERNAL_SERVER_ERROR, message = "An error occurred while updating profile for username: $username. Exception: $ex")
         }
     }
 

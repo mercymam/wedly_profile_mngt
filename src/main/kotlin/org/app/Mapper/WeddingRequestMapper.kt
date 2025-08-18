@@ -15,12 +15,12 @@ abstract class WeddingRequestMapper {
 
     @Mapping(target = "offers", source = "offers", qualifiedByName = ["mapOfferListToIdList"])
     @Mapping(target = "location", source = "location", qualifiedByName = ["mapLocationToDto"])
-    @Mapping(target = "username", source = "username", qualifiedByName = ["mapCustomerToUsername"])
+    @Mapping(target = "customerId", source = "customerId", qualifiedByName = ["mapCustomerToId"])
     abstract fun toDto(weddingRequestEntity: WeddingRequestEntity): WeddingRequestDto
 
     @Mapping(target = "offers", source = "offers", qualifiedByName = ["mapIdListToOfferList"])
     @Mapping(target = "location", source = "location", qualifiedByName = ["mapLocationToEntity"])
-    @Mapping(target = "username", source = "username", qualifiedByName = ["mapUsernameToUser"])
+    @Mapping(target = "customerId", source = "customerId", qualifiedByName = ["mapIdToCustomer"])
     abstract fun toEntity(weddingRequestDto: WeddingRequestDto): WeddingRequestEntity
 
     @Named("mapIdListToOfferList")
@@ -45,18 +45,18 @@ abstract class WeddingRequestMapper {
         return offer?.offerId
     }
 
-    @Named("mapUsernameToUser")
-    open fun mapUsernameToUser(username: String?): CustomerPersonalDetails {
+    @Named("mapIdToCustomer")
+    open fun mapIdToCustomer(id: Long?): CustomerPersonalDetails {
         val customerPersonalDetails = CustomerPersonalDetails()
-        if (username != null) {
-            customerPersonalDetails.username = username
+        if (id != null) {
+            customerPersonalDetails.id = id
         }
         return customerPersonalDetails
     }
 
-    @Named("mapCustomerToUsername")
-    open fun mapCustomerToUsername(customer: CustomerPersonalDetails?): String? {
-        return customer?.username
+    @Named("mapCustomerToId")
+    open fun mapCustomerToId(customer: CustomerPersonalDetails?): Long? {
+        return customer?.id
     }
 
     @Named("mapLocationToDto")

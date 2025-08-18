@@ -7,6 +7,11 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "vendor_details")
 class VendorPersonalDetails: PanacheEntityBase{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vendor_id")
+    var vendorId: Long ?= null
+
     @Column(name = "first_name")
     lateinit var firstName: String
 
@@ -38,7 +43,6 @@ class VendorPersonalDetails: PanacheEntityBase{
     @Column(name = "password")
     lateinit var password: String
 
-    @Id
     @Column(name = "username")
     lateinit var username: String
 }

@@ -15,8 +15,8 @@ data class WeddingRequestDto @JsonbCreator constructor(
     @field:Name("offers")
     val offers: List<Long> = mutableListOf(),
 
-    @field:Name("username")
-    val username: String,
+    @field:Name("customerId")
+    val customerId: Long,
 
     @field:Name("weddingType")
     val weddingType: WeddingType,
@@ -53,8 +53,8 @@ data class OfferDto @JsonbCreator constructor(
     val offerId: Long,
     @field:Name("weddingRequest")
     val weddingRequest: Long,
-    @field:Name("username")
-    val username: String,
+    @field:Name("vendorId")
+    val vendorId: String,
     @field:Name("offerDescription")
     val offerDescription: String,
     @field:Name("amount")
