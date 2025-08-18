@@ -21,6 +21,7 @@ class WeddingRequestEntity: PanacheEntityBase {
     @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     lateinit var username: CustomerPersonalDetails
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "wedding_type", nullable = false)
     lateinit var  weddingType: WeddingType
 

@@ -3,8 +3,7 @@ package org.app.Repository
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheRepository
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
+import org.jboss.logging.Logger
 import org.app.Entity.VendorPersonalDetails
 
 //TODO: DB changes - indexing for firstname and lastname
@@ -12,22 +11,23 @@ import org.app.Entity.VendorPersonalDetails
 @ApplicationScoped
 class VendorPersonRepository : PanacheRepository<VendorPersonalDetails>{
 
-    private val logger: Logger = LogManager.getLogger(VendorPersonRepository::class.java)
+    private val logger: Logger = Logger.getLogger(VendorPersonRepository::class.java)
 
     suspend fun findByName(nameInput: String): List<VendorPersonalDetails> {
         logger.info("Searching for user with name: $nameInput")
-        val names = nameInput.trim().split("\\s+.toRegex()")
+        val names = nameInput.trim().split(" ")
+        logger.info("Names to fetch from the database: $names")
         return when(names.size){
             1 -> {
                 val name = names[0]
-                find("LOWER(firstName) LIKE LOWER(?1) OR LOWER(lastName) LIKE(?1) OR LOWER(username) LIKE(?1)", name).list()
+                find("LOWER(firstName) LIKE LOWER(CONCAT(?1, '%')) OR LOWER(lastName) LIKE(CONCAT(?1, '%')) OR LOWER(username) LIKE(CONCAT(?1, '%'))", name).list()
             }
             2-> {
                 val (name1, name2) = names
                 find(
                     """
-                (LOWER(firstName) LIKE LOWER(?1) AND LOWER(lastName) LIKE LOWER(?2)) OR 
-                (LOWER(firstName) LIKE LOWER(?2) AND LOWER(lastName) LIKE LOWER(?1)) 
+                (LOWER(firstName) LIKE LOWER(CONCAT(?1, '%')) AND LOWER(lastName) LIKE LOWER(CONCAT(?2, '%'))) OR 
+                (LOWER(firstName) LIKE LOWER(CONCAT(?2, '%')) AND LOWER(lastName) LIKE LOWER(CONCAT(?1, '%'))) 
                 """.trimIndent(),
                     name1, name2
                 ).list()

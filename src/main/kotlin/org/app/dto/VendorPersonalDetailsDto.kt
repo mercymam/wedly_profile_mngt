@@ -9,7 +9,6 @@ import org.eclipse.microprofile.graphql.Input
 data class VendorPersonalDetailsDto @JsonbCreator constructor(
     var firstName: String,
     var bio: String,
-    var city: String,
     var profilePicture: String? = null,
     var coverPhoto: String? = null,
     var profession: String,

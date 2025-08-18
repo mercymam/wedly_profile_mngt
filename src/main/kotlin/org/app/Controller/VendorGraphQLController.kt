@@ -1,8 +1,7 @@
 package org.app.Controller
 
 import kotlinx.coroutines.runBlocking
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
+import org.jboss.logging.Logger
 import org.app.dto.GraphQLResponse
 import org.app.Repository.VendorPersonRepository
 import org.app.Mapper.VendorPersonalDetailsMapper
@@ -17,7 +16,7 @@ class VendorGraphQLController(
     private val vendorPersonalDetailsMapper: VendorPersonalDetailsMapper
 ) {
 
-    private val logger: Logger = LogManager.getLogger(VendorGraphQLController::class.java)
+    private val logger: Logger = Logger.getLogger(VendorGraphQLController::class.java)
 
     @Query("searchVendor")
     @Description("Get a list of vendor details based on search")
@@ -34,9 +33,10 @@ class VendorGraphQLController(
             val vendorDetailsDto = vendorDetails.map { vendorDetail ->
                 vendorPersonalDetailsMapper.toDto(vendorDetail)
             }
+            logger.info("Gotten vendor details of size ${vendorDetails.size} while fetching vendors with $name")
             return VendorListResponse(status = Status.OK, weddingDetails = vendorDetailsDto)
         }catch (ex: Exception){
-            logger.error("Error occurred while trying to search vendorPersonalDetails with name $name ", ex.message)
+            logger.error("Error occurred while trying to search vendorPersonalDetails with name $name ", ex)
             return VendorListResponse(status = Status.INTERNAL_SERVER_ERROR, message = "An error occurred while finding profile for name: $name. Exception: $ex")
 
         }
@@ -51,16 +51,16 @@ class VendorGraphQLController(
 
         try{
             validateNames(firstName, lastName)
-            logger.info("Creating profile for vendor with username {}, firstName {} and lastName {}", username, firstName, lastName)
+            logger.info("Creating profile for vendor with username $username, firstName $firstName and lastName $lastName")
 
             val vendorEntity = vendorPersonalDetailsMapper.toEntity(vendorPersonalDetails)
             val vendorId = runBlocking {vendorRepo.createProfile(vendorEntity)}
 
-            logger.info("Successfully created profile: vendorId {}, firstName {} and lastName {}", vendorId, firstName, lastName)
+            logger.info("Successfully created profile: vendorId $vendorId, firstName $firstName and lastName $lastName")
 
             return GraphQLResponse(message = "Successfully created profile: vendorId $vendorId, firstName $firstName and lastName $lastName", status = Status.OK)
         }catch (ex: Exception){
-            logger.error("Error occurred while trying to save vendorPersonalDetails with username $username, firstName $firstName and lastName $lastName", ex.message)
+            logger.error("Error occurred while trying to save vendorPersonalDetails with username $username, firstName $firstName and lastName $lastName", ex)
             return GraphQLResponse(status = Status.INTERNAL_SERVER_ERROR, message = "An error occurred while creating profile for firstName: $firstName and lastName: $lastName. Exception: $ex")
         }
     }
@@ -73,7 +73,7 @@ class VendorGraphQLController(
 
         try{
             validateNames(firstName, lastName)
-            logger.info("Updating vendor with username {}, firstName {} and lastName {}", username, firstName, lastName)
+            logger.info("Updating vendor with username $username, firstName $firstName and lastName $lastName")
 
             val vendorEntity = vendorPersonalDetailsMapper.toEntity(vendorPersonalDetails)
             val vendorId = runBlocking {
@@ -82,13 +82,13 @@ class VendorGraphQLController(
 
             return GraphQLResponse(message = "Successfully updated vendor details for vendorId: $vendorId", status = Status.OK)
         }catch (ex: Exception){
-            logger.error("Error occurred while trying to updating vendorPersonalDetails with username $username, firstName $firstName and lastName $lastName", ex.message)
+            logger.error("Error occurred while trying to updating vendorPersonalDetails with username $username, firstName $firstName and lastName $lastName", ex)
             return GraphQLResponse(status = Status.INTERNAL_SERVER_ERROR, message = "An error occurred while updating profile for vendorId: ${vendorPersonalDetails.username}. Exception: $ex")
         }
     }
 
     private fun validateNames(firstName: String, lastName: String) {
-        logger.info("Validating firstname {} and lastname {}", firstName, lastName)
+        logger.info("Validating firstname $firstName and lastname $lastName")
         if (firstName.isBlank() || firstName.contains("\\s".toRegex())) {
             throw IllegalArgumentException("First name must be a single, non-blank word")
         }
