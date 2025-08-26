@@ -27,13 +27,14 @@ class WeddingRequestController(
     @Query("usersWeddingRequest")
     fun getUserWeddingRequests(
         username: String,
-        offset: Int = 0,
-        limit: Int = 10
+        offset: Int?,
+        limit: Int?
     ): WeddingRequestListResponse {
         try {
             logger.info("Finding user: {} wedding request with limit: {}", username, limit)
-
-            val weddingRequests = runBlocking { weddingRequestRepository.findByUsername(username, offset, limit) }
+            val offsetValue = offset ?: 0
+            val limitValue = limit ?: 10
+            val weddingRequests = runBlocking { weddingRequestRepository.findByUsername(username, offsetValue, limitValue) }
             val weddingRequestsDto = weddingRequests.map { weddingRequestMapper.toDto(it) }
 
             logger.info("Found wedding request by user {} of size {}", username, weddingRequests.size)
@@ -46,13 +47,13 @@ class WeddingRequestController(
 
     @Query("suggestedWeddingRequest")
     fun getSuggestedWeddingRequests(
-        startDate: Date? = null,
-        endDate: Date? = null,
-        location: String? = null,
-        weddingType: WeddingType? = null,
+        startDate: Date?,
+        endDate: Date?,
+        city: String?,
+        weddingType: WeddingType?,
         serviceNeeded: String,
-        startBudgetRange: Float,
-        endBudgetRange: Float,
+        startBudgetRange: String?,
+        endBudgetRange: String?,
         offset: Int = 0,
         limit: Int = 50
     ): WeddingRequestListResponse {
@@ -62,7 +63,7 @@ class WeddingRequestController(
                 "Suggesting wedding request with with $filter",
                 startDate,
                 endDate,
-                location,
+                city,
                 weddingType,
                 serviceNeeded,
                 startBudgetRange,
@@ -70,16 +71,17 @@ class WeddingRequestController(
                 offset,
                 limit
             )
-
+            val floatStartRange = startBudgetRange?.toFloat()
+            val floatEndRange = endBudgetRange?.toFloat()
             val weddingRequests = runBlocking {
                 weddingRequestRepository.filterRequest(
                     startDate = startDate,
                     endDate = endDate,
-                    location = location,
+                    city = city,
                     weddingType = weddingType,
                     serviceNeeded = serviceNeeded,
-                    startBudgetRange = startBudgetRange,
-                    endBudgetRange = endBudgetRange,
+                    startBudgetRange = floatStartRange,
+                    endBudgetRange = floatEndRange,
                     offset = offset,
                     limit = limit
                 )
@@ -90,7 +92,7 @@ class WeddingRequestController(
                 weddingRequestsDto.size,
                 startDate,
                 endDate,
-                location,
+                city,
                 weddingType,
                 serviceNeeded,
                 startBudgetRange,
@@ -103,7 +105,7 @@ class WeddingRequestController(
             logger.error("Error occurred while getting wedding request with filter: $filter",
                 startDate,
                 endDate,
-                location,
+                city,
                 weddingType,
                 serviceNeeded,
                 startBudgetRange,

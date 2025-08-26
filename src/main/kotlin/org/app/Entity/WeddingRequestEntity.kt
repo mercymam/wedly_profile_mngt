@@ -36,10 +36,10 @@ class WeddingRequestEntity: PanacheEntityBase {
     lateinit var  serviceNeeded: String
 
     @Column(name = "start_budget_range", nullable = false)
-    var  startBudgetRange: Int?= null
+    var  startBudgetRange: Float?= null
 
     @Column(name = "end_budget_range", nullable = false)
-    var  endBudgetRange: Int?= null
+    var  endBudgetRange: Float?= null
 
     @Column(name = "description", nullable = false)
     lateinit var  description: String
