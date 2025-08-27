@@ -13,7 +13,7 @@ data class WeddingRequestDto @JsonbCreator constructor(
     val postId: Long? = null,
 
     @field:Name("offers")
-    val offers: List<Long> = mutableListOf(),
+    val offers: List<Long>? = mutableListOf(),
 
     @field:Name("customerId")
     val customerId: Long,
@@ -50,7 +50,7 @@ enum class WeddingType {
 @Input("OfferDtoInput")
 data class OfferDto @JsonbCreator constructor(
     @field:Name("offerId")
-    val offerId: Long,
+    val offerId: Long? = null,
     @field:Name("weddingRequest")
     val weddingRequest: Long,
     @field:Name("vendorId")

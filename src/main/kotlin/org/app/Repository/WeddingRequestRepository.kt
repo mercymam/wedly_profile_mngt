@@ -3,6 +3,7 @@ package org.app.Repository
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheRepository
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
+import jakarta.transaction.Transactional
 import org.app.Entity.WeddingRequestEntity
 import org.app.Utility.DateUtility
 import org.app.dto.WeddingType
@@ -16,10 +17,6 @@ class WeddingRequestRepository : PanacheRepository<WeddingRequestEntity>{
 
     @Inject
     lateinit var dateUtility: DateUtility
-
-    suspend fun findById(id: UUID): WeddingRequestEntity? {
-        return find("postId = ?1", id).firstResult()
-    }
 
     suspend fun findByUsername(username: String, offset: Int, limit: Int): List<WeddingRequestEntity> {
         return find("customerId.username = ?1", username).range(offset, offset + limit - 1).list()
@@ -49,6 +46,7 @@ class WeddingRequestRepository : PanacheRepository<WeddingRequestEntity>{
         return find(query.toString(), parameter).range(offset, offset + limit - 1).list()
     }
 
+    @Transactional
     suspend fun createRequest(request: WeddingRequestEntity): Long? {
         persist(request)
         return request.postId

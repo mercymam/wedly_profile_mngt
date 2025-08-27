@@ -1,8 +1,11 @@
 package org.app.Mapper
 
+import jakarta.inject.Inject
 import org.app.Entity.OfferEntity
 import org.app.Entity.VendorPersonalDetails
 import org.app.Entity.WeddingRequestEntity
+import org.app.Repository.VendorPersonRepository
+import org.app.Repository.WeddingRequestRepository
 import org.app.dto.OfferDto
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
@@ -11,37 +14,37 @@ import org.mapstruct.Named
 @Mapper(componentModel = "cdi")
 abstract class OfferMapper {
 
-    @Mapping(target = "weddingRequest", source = "weddingRequest", qualifiedByName = ["mapIdToWeddingRequest"])
-    @Mapping(target = "vendorId", source = "vendorId", qualifiedByName = ["mapUsernameToVendor"])
+    @Inject
+    lateinit var vendorPersonRepository: VendorPersonRepository
+
+    @Inject
+    lateinit var weddingRequestRepository: WeddingRequestRepository
+
+    @Mapping(target = "weddingRequest", source = "weddingRequest", qualifiedByName = ["mapRequestIdToWeddingRequest"])
+    @Mapping(target = "vendorId", source = "vendorId", qualifiedByName = ["mapVendorIdToVendor"])
     abstract fun toEntity(dto: OfferDto): OfferEntity
 
-    @Mapping(target = "weddingRequest", source = "weddingRequest", qualifiedByName = ["mapRequestToId"])
-    @Mapping(target = "vendorId", source = "vendorId", qualifiedByName = ["mapVendorToUsername"])
+    @Mapping(target = "weddingRequest", source = "weddingRequest", qualifiedByName = ["mapRequestToRequestId"])
+    @Mapping(target = "vendorId", source = "vendorId", qualifiedByName = ["mapVendorToVendorId"])
     abstract fun toDto(entity: OfferEntity): OfferDto
 
-    @Named("mapIdToWeddingRequest")
-    open fun mapIdToWeddingRequest(id: Long?): WeddingRequestEntity {
-        val entity = WeddingRequestEntity()
-        entity.postId = id
-        return entity
+    @Named("mapRequestIdToWeddingRequest")
+    open fun mapRequestIdToWeddingRequest(id: Long?): WeddingRequestEntity {
+        return id?.let {weddingRequestRepository.findById(id)} ?: throw IllegalArgumentException("request id $id not found when mapping offer")
     }
 
-    @Named("mapRequestToId")
-    open fun mapRequestToId(request: WeddingRequestEntity?): Long? {
+    @Named("mapRequestToRequestId")
+    open fun mapRequestToRequestId(request: WeddingRequestEntity?): Long? {
         return request?.postId
     }
 
-    @Named("mapUsernameToVendor")
-    open fun mapUsernameToVendor(username: String?): VendorPersonalDetails {
-        val entity = VendorPersonalDetails()
-        if (username != null) {
-            entity.username = username
-        }
-        return entity
+    @Named("mapVendorIdToVendor")
+    open fun mapVendorIdToVendor(vendorId: Long?): VendorPersonalDetails {
+        return vendorId?.let { vendorPersonRepository.findById(vendorId)} ?: throw IllegalArgumentException("vendor id $vendorId not found when mapping offer")
     }
 
-    @Named("mapVendorToUsername")
-    open fun mapVendorToUsername(vendor: VendorPersonalDetails?): String? {
-        return vendor?.username
+    @Named("mapVendorToVendorId")
+    open fun mapVendorToVendorId(vendor: VendorPersonalDetails?): Long? {
+        return vendor?.vendorId
     }
 }

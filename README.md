@@ -66,3 +66,5 @@ TODO:
 - data validation
 - Security like encrypting important info
 - Avoid sql injections
+- Work on database primary key so its always in sync ie if data is added manually and after automatically there wont be primary key conflicts
+- multithreading/race condition in database

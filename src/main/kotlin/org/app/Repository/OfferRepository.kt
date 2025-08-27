@@ -2,16 +2,14 @@ package org.app.Repository
 
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheRepository
 import jakarta.enterprise.context.ApplicationScoped
+import jakarta.transaction.Transactional
 import org.app.Entity.OfferEntity
 import java.util.UUID
 
 @ApplicationScoped
 class OfferRepository: PanacheRepository<OfferEntity> {
 
-    suspend fun findById(id: UUID): OfferEntity? {
-        return find("offer_id = ?1", id).firstResult()
-    }
-
+    @Transactional
     suspend fun createOffer(offer: OfferEntity): Long? {
         persist(offer)
         return offer.offerId

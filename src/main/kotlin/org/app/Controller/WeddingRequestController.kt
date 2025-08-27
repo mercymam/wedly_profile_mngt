@@ -119,11 +119,11 @@ class WeddingRequestController(
 
 
     @Query("getWeddingRequest")
-    fun getWeddingRequest(id: UUID): WeddingRequestResponse {
+    fun getWeddingRequest(id: Int): WeddingRequestResponse {
         try {
             logger.info("Finding wedding request by Id: {}", id)
 
-            val weddingRequest = runBlocking { weddingRequestRepository.findById(id) }
+            val weddingRequest = runBlocking { weddingRequestRepository.findById(id.toLong()) }
 
             weddingRequest?.let {
                 logger.info(
@@ -147,10 +147,10 @@ class WeddingRequestController(
     }
 
     @Query("getWeddingOffer")
-    fun getWeddingOffer(id: UUID): OfferResponse {
+    fun getWeddingOffer(id: Int): OfferResponse {
         try {
             logger.info("Finding wedding offer by Id: {}", id)
-            val weddingOffer = runBlocking { offerRepository.findById(id) }
+            val weddingOffer = runBlocking { offerRepository.findById(id.toLong()) }
 
             weddingOffer?.let {
                 logger.info(
@@ -200,6 +200,7 @@ class WeddingRequestController(
     fun postWeddingOffer(weddingOffer: OfferDto): GraphQLResponse {
         try {
             val entity = offerMapper.toEntity(weddingOffer)
+            print("Offer entity is $entity")
             logger.info("Creating new wedding offer by offerId: ${weddingOffer.offerId} for vendor id: ${weddingOffer.vendorId} and postId: ${weddingOffer.weddingRequest}")
 
             val offerId = runBlocking { offerRepository.createOffer(entity) }
